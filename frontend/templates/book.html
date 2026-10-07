@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 650px;">
+  <div class="card p-4">
+    <h3 class="fw-bold mb-3">Book Service with {{ worker.worker_name }}</h3>
+    <p class="text-muted mb-4">Skill: <strong>{{ worker.primary_skill }}</strong> | Rate: ₹{{ worker.price_per_hour }}/hr</p>
+
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Service Required</label>
+        <input type="text" name="service_name" class="form-control" placeholder="e.g. Chair Repair / Tap Fixing" required>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Preferred Date</label>
+          <input type="date" name="booking_date" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Preferred Time</label>
+          <input type="time" name="booking_time" class="form-control" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Full Service Address</label>
+        <textarea name="address" class="form-control" rows="2" placeholder="House no, Street, Area..." required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Work Description</label>
+        <textarea name="work_description" class="form-control" rows="3" placeholder="Describe the job details..."></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Estimated Total Budget (₹)</label>
+        <input type="number" step="10" name="estimated_budget" class="form-control" placeholder="1000" required>
+      </div>
+
+      <div class="demo-banner mb-3">
+        <i class="bi bi-info-circle me-1"></i><strong>Demo Payment Workflow:</strong> 10% platform fee will be calculated automatically on completion. No upfront charge required.
+      </div>
+
+      <button type="submit" class="btn btn-success btn-lg w-100">Confirm Booking Request</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

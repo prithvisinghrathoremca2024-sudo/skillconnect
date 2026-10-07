@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="fw-bold mb-4">Customer Dashboard</h2>
+
+  <div class="card p-4 mb-4">
+    <h4 class="fw-bold mb-3">My Bookings History</h4>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Worker</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Budget</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td>#{{ b.id }}</td>
+            <td>{{ b.worker_name }}</td>
+            <td>{{ b.service_name }}</td>
+            <td>{{ b.booking_date }}</td>
+            <td>₹{{ b.estimated_budget }}</td>
+            <td><span class="badge bg-secondary">{{ b.status }}</span></td>
+            <td><a href="{{ url_for('booking_detail', booking_id=b.id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

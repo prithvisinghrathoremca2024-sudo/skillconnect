@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 750px;">
+  <div class="card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="fw-bold mb-0">Booking Details #{{ booking.id }}</h3>
+      <span class="badge bg-primary fs-6">{{ booking.status }}</span>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <p class="mb-1 text-muted">Customer</p>
+        <strong>{{ booking.customer_name }} ({{ booking.customer_phone }})</strong>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1 text-muted">Worker</p>
+        <strong>{{ booking.worker_name }} ({{ booking.worker_phone }})</strong>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1 text-muted">Service</p>
+        <strong>{{ booking.service_name }}</strong>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1 text-muted">Scheduled Date & Time</p>
+        <strong>{{ booking.booking_date }} at {{ booking.booking_time }}</strong>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Simulated Payment Breakdown -->
+    <h5 class="fw-bold mb-3">Demo Payment Breakdown</h5>
+    <div class="bg-light p-3 rounded">
+      <div class="d-flex justify-content-between mb-2">
+        <span>Total Customer Budget:</span>
+        <strong>₹{{ booking.estimated_budget }}</strong>
+      </div>
+      <div class="d-flex justify-content-between mb-2 text-danger">
+        <span>SkillConnect Commission (10%):</span>
+        <strong>- ₹{{ booking.commission }}</strong>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between text-success fw-bold fs-5">
+        <span>Worker Net Earnings:</span>
+        <span>₹{{ booking.worker_amount }}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-4">
+      {% if session.get('role') == 'worker' and booking.status == 'PENDING' %}
+        <form method="POST" action="{{ url_for('booking_action', booking_id=booking.id, action='accept') }}" class="d-inline">
+          <button class="btn btn-success me-2">Accept Job</button>
+        </form>
+        <form method="POST" action="{{ url_for('booking_action', booking_id=booking.id, action='reject') }}" class="d-inline">
+          <button class="btn btn-danger">Reject Job</button>
+        </form>
+      {% elif session.get('role') == 'worker' and booking.status == 'ACCEPTED' %}
+        <form method="POST" action="{{ url_for('booking_action', booking_id=booking.id, action='complete') }}">
+          <button class="btn btn-primary w-100">Mark Service as Completed</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Review Section if Completed -->
+  {% if booking.status == 'COMPLETED' and session.get('role') == 'customer' %}
+  <div class="card p-4">
+    <h4 class="fw-bold mb-3">Leave Worker Review</h4>
+    {% if review %}
+      <div class="alert alert-success mb-0">
+        You rated this service <strong>{{ review.rating }} / 5 stars</strong>: "{{ review.comment }}"
+      </div>
+    {% else %}
+      <form method="POST" action="{{ url_for('add_review', booking_id=booking.id) }}">
+        <div class="mb-3">
+          <label class="form-label">Rating (1 to 5)</label>
+          <select name="rating" class="form-select" required>
+            <option value="5">5 Stars - Excellent</option>
+            <option value="4">4 Stars - Good</option>
+            <option value="3">3 Stars - Average</option>
+            <option value="2">2 Stars - Poor</option>
+            <option value="1">1 Star - Very Bad</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Review Comment</label>
+          <textarea name="comment" class="form-control" rows="3" required></textarea>
+        </div>
+        <button class="btn btn-success w-100">Submit Review</button>
+      </form>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

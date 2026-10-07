@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 500px;">
+  <div class="card p-4 mt-3">
+    <h3 class="fw-bold text-center mb-3">Customer Registration</h3>
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">City</label>
+          <input type="text" name="city" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Area / Locality</label>
+          <input type="text" name="area" class="form-control" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 btn-lg">Create Customer Account</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

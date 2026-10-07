@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillConnect - Your Skills. Your Opportunity.</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=2) }}">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}"><i class="bi bi-people-fill text-primary me-2"></i>SkillConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('services') }}">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('workers') }}">Find Workers</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
+        </ul>
+        
+        <ul class="navbar-nav ms-auto">
+          {% if session.get('user_id') %}
+            {% if session.get('role') == 'customer' %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('customer_dashboard') }}">My Dashboard</a></li>
+            {% elif session.get('role') == 'worker' %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('worker_dashboard') }}">Worker Portal</a></li>
+            {% elif session.get('role') == 'admin' %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin Console</a></li>
+            {% endif %}
+            <li class="nav-item"><a class="btn btn-outline-danger btn-sm ms-2" href="{{ url_for('logout') }}">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+            <li class="nav-item ms-2"><a class="btn btn-primary btn-sm" href="{{ url_for('register') }}">Join as Customer</a></li>
+            <li class="nav-item ms-2"><a class="btn btn-outline-success btn-sm" href="{{ url_for('register_worker') }}">Become a Worker</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  <div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Content -->
+  <main class="py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-5 pb-4 mt-5">
+    <div class="container text-center text-md-start">
+      <div class="row">
+        <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3"><i class="bi bi-people-fill text-primary me-2"></i>SkillConnect</h6>
+          <p>Connecting skilled local workers with affordable customer requests to foster sustainable livelihoods and social impact.</p>
+        </div>
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+          <p><a href="{{ url_for('workers') }}" class="text-white-50 text-decoration-none">Browse Workers</a></p>
+          <p><a href="{{ url_for('services') }}" class="text-white-50 text-decoration-none">Categories</a></p>
+          <p><a href="{{ url_for('about') }}" class="text-white-50 text-decoration-none">Our Impact Model</a></p>
+        </div>
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <h6 class="text-uppercase fw-bold mb-3">Business Model</h6>
+          <p class="text-white-50">SkillConnect charges a small 10% platform fee on completed jobs to sustain platform growth.</p>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <div class="text-center text-white-50">
+        <small>© 2026 SkillConnect. Demo Application built with Flask & SQLite.</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

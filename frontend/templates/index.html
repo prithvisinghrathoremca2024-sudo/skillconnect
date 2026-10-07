@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero-section text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Find Skilled People. Create Opportunities.</h1>
+    <p class="lead mt-3">SkillConnect connects local skilled low-income workers with customers looking for reliable and affordable services.</p>
+    <div class="mt-4">
+      <a href="{{ url_for('workers') }}" class="btn btn-light btn-lg text-primary fw-bold me-2"><i class="bi bi-search me-1"></i> Find a Worker</a>
+      <a href="{{ url_for('register_worker') }}" class="btn btn-outline-light btn-lg"><i class="bi bi-person-plus me-1"></i> Join as a Worker</a>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <!-- How it works -->
+  <h2 class="text-center fw-bold mb-4">How SkillConnect Works</h2>
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded shadow-sm">
+        <i class="bi bi-search display-5 text-primary"></i>
+        <h5 class="mt-3">1. Search</h5>
+        <p class="text-muted">Find local skilled workers filtered by service, area, rating, and affordable pricing.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded shadow-sm">
+        <i class="bi bi-calendar-check display-5 text-primary"></i>
+        <h5 class="mt-3">2. Book</h5>
+        <p class="text-muted">Send a booking request with your job requirements and schedule.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded shadow-sm">
+        <i class="bi bi-check-circle display-5 text-primary"></i>
+        <h5 class="mt-3">3. Get Job Done</h5>
+        <p class="text-muted">Worker completes the service, customer leaves a rating, and fair earnings are distributed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Impact Section -->
+  <div class="bg-white rounded p-5 mt-5 border shadow-sm">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h3 class="fw-bold text-success">Your Booking Creates Opportunity</h3>
+        <p class="text-muted">Every booking helps local skilled workers reach customers, earn income, and build a sustainable livelihood. We charge a fair 10% platform commission to support operations.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="p-3 bg-light rounded">
+          <h4 class="text-primary fw-bold">₹{{ stats.earnings }}</h4>
+          <p class="mb-0 text-muted small">Total Worker Earnings Generated</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

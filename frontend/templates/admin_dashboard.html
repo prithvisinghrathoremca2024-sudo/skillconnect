@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="fw-bold mb-4">SkillConnect Admin Dashboard</h2>
+
+  <div class="row g-3 mb-4 text-center">
+    <div class="col-md-2">
+      <div class="card p-3 bg-light">
+        <small class="text-muted">Customers</small>
+        <h4 class="fw-bold mb-0">{{ stats.total_customers }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card p-3 bg-light">
+        <small class="text-muted">Workers</small>
+        <h4 class="fw-bold mb-0">{{ stats.total_workers }}</h4>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card p-3 bg-warning text-dark">
+        <small>Pending Workers</small>
+        <h4 class="fw-bold mb-0">{{ stats.pending_workers }}</h4>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 bg-light">
+        <small class="text-muted">Total Bookings</small>
+        <h4 class="fw-bold mb-0">{{ stats.total_bookings }}</h4>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card p-3 bg-success text-white">
+        <small>Platform Revenue (10%)</small>
+        <h4 class="fw-bold mb-0">₹{{ stats.total_commission }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4 mb-4">
+    <h4 class="fw-bold mb-3">Worker Verification Management</h4>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Primary Skill</th>
+            <th>City</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for w in workers %}
+          <tr>
+            <td>{{ w.name }}</td>
+            <td>{{ w.primary_skill }}</td>
+            <td>{{ w.city }}</td>
+            <td><span class="badge bg-secondary">{{ w.verification_status }}</span></td>
+            <td>
+              <form method="POST" action="{{ url_for('admin_update_worker_status', worker_id=w.id, status='Verified') }}" class="d-inline">
+                <button class="btn btn-sm btn-success" {% if w.verification_status == 'Verified' %}disabled{% endif %}>
+                  {{ 'Verified' if w.verification_status == 'Verified' else 'Verify' }}
+                </button>
+              </form>
+              <form method="POST" action="{{ url_for('admin_update_worker_status', worker_id=w.id, status='Rejected') }}" class="d-inline">
+                <button class="btn btn-sm btn-danger" {% if w.verification_status == 'Rejected' %}disabled{% endif %}>
+                  {{ 'Rejected' if w.verification_status == 'Rejected' else 'Reject' }}
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

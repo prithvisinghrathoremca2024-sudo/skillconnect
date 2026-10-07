@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="fw-bold mb-4">Worker Portal</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 text-center bg-primary text-white">
+        <h5>Total Net Earnings</h5>
+        <h3 class="fw-bold mb-0">₹{{ stats.total_earnings }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 text-center bg-success text-white">
+        <h5>Completed Jobs</h5>
+        <h3 class="fw-bold mb-0">{{ stats.completed_count }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 text-center bg-warning text-dark">
+        <h5>Pending Requests</h5>
+        <h3 class="fw-bold mb-0">{{ stats.pending_count }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4">
+    <h4 class="fw-bold mb-3">Service Requests</h4>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Customer Budget</th>
+            <th>Your Payout (90%)</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td>{{ b.customer_name }}</td>
+            <td>{{ b.service_name }}</td>
+            <td>{{ b.booking_date }}</td>
+            <td>₹{{ b.estimated_budget }}</td>
+            <td class="text-success fw-bold">₹{{ b.worker_amount }}</td>
+            <td><span class="badge bg-secondary">{{ b.status }}</span></td>
+            <td><a href="{{ url_for('booking_detail', booking_id=b.id) }}" class="btn btn-sm btn-primary">Details</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

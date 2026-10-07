@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2 class="fw-bold mb-4">Discover Local Skilled Workers</h2>
+
+  <!-- Filters -->
+  <div class="card p-3 mb-4">
+    <form method="GET" action="{{ url_for('workers') }}" class="row g-3">
+      <div class="col-md-4">
+        <input type="text" name="q" class="form-control" placeholder="Search worker name or skill..." value="{{ search_query }}">
+      </div>
+      <div class="col-md-3">
+        <input type="text" name="skill" class="form-control" placeholder="Filter by skill (e.g. Carpentry)" value="{{ skill_filter }}">
+      </div>
+      <div class="col-md-3">
+        <input type="text" name="city" class="form-control" placeholder="Filter by city" value="{{ city_filter }}">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="row g-4">
+    {% if workers %}
+      {% for worker in workers %}
+      <div class="col-md-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="fw-bold mb-0">{{ worker.name }}</h5>
+              {% if worker.verification_status == 'Verified' %}
+                <span class="badge badge-verified"><i class="bi bi-patch-check-fill me-1"></i>Verified</span>
+              {% endif %}
+            </div>
+            <p class="text-primary fw-bold mt-2 mb-1"><i class="bi bi-briefcase me-1"></i>{{ worker.primary_skill }}</p>
+            <p class="text-muted small"><i class="bi bi-geo-alt me-1"></i>{{ worker.area }}, {{ worker.city }}</p>
+            <p class="small text-secondary">{{ worker.about | truncate(90) }}</p>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="price-tag">₹{{ worker.price_per_hour }} <small class="text-muted fs-6">/ hr</small></span>
+              <span class="text-dark"><i class="bi bi-star-fill text-warning me-1"></i>{{ worker.rating }}</span>
+            </div>
+            <div class="d-grid gap-2">
+              <a href="{{ url_for('worker_profile', worker_id=worker.id) }}" class="btn btn-outline-primary">View Profile</a>
+              <a href="{{ url_for('book_worker', worker_id=worker.id) }}" class="btn btn-success">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-search display-3 text-muted"></i>
+        <p class="mt-3 text-muted fs-5">No workers found matching your query.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

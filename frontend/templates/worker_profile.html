@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card p-3 text-center">
+        <i class="bi bi-person-circle display-1 text-secondary mb-3"></i>
+        <h3 class="fw-bold mb-1">{{ worker.name }}</h3>
+        <p class="text-primary fw-bold mb-2">{{ worker.primary_skill }}</p>
+        {% if worker.verification_status == 'Verified' %}
+          <div class="mb-3"><span class="badge badge-verified"><i class="bi bi-patch-check-fill me-1"></i>Verified Worker</span></div>
+        {% endif %}
+        <p class="text-muted"><i class="bi bi-geo-alt me-1"></i>{{ worker.area }}, {{ worker.city }}</p>
+        <hr>
+        <div class="d-flex justify-content-around">
+          <div>
+            <p class="mb-0 text-muted small">Experience</p>
+            <strong class="fs-5">{{ worker.experience_years }} Yrs</strong>
+          </div>
+          <div>
+            <p class="mb-0 text-muted small">Completed</p>
+            <strong class="fs-5">{{ worker.completed_jobs }} Jobs</strong>
+          </div>
+        </div>
+        <hr>
+        <div class="price-tag mb-3">₹{{ worker.price_per_hour }} / Hour</div>
+        <a href="{{ url_for('book_worker', worker_id=worker.id) }}" class="btn btn-success btn-lg w-100">Book Worker</a>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card p-4 mb-4">
+        <h4 class="fw-bold mb-3">About Worker</h4>
+        <p class="text-secondary">{{ worker.about }}</p>
+        <h5 class="fw-bold mt-4 mb-2">Additional Skills</h5>
+        <p class="badge bg-light text-dark fs-6 border p-2 me-1">{{ worker.additional_skills }}</p>
+        <h5 class="fw-bold mt-4 mb-2">Working Hours</h5>
+        <p class="text-muted"><i class="bi bi-clock me-1"></i>{{ worker.working_hours }}</p>
+      </div>
+
+      <div class="card p-4">
+        <h4 class="fw-bold mb-3">Customer Reviews & Ratings ({{ worker.rating }} / 5.0)</h4>
+        {% if reviews %}
+          {% for review in reviews %}
+            <div class="border-bottom py-3">
+              <div class="d-flex justify-content-between">
+                <strong>{{ review.customer_name }}</strong>
+                <span class="text-warning"><i class="bi bi-star-fill me-1"></i>{{ review.rating }}/5</span>
+              </div>
+              <p class="text-muted small mb-1">{{ review.created_at }}</p>
+              <p class="mb-0">{{ review.comment }}</p>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No reviews yet for this worker.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
