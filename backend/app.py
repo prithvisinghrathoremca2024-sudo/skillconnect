@@ -17,7 +17,7 @@ app = Flask(
     static_folder=os.path.join(FRONTEND_ROOT, 'static'),
     static_url_path='/static',
 )
-app.secret_key = 'skillconnect_secret_key_change_in_production'
+app.secret_key = os.environ.get('SECRET_KEY', 'skillconnect_secret_key_change_in_production')
 DATABASE = os.path.join(PROJECT_ROOT, 'skillconnect.db')
 
 def get_db():
